@@ -1,6 +1,7 @@
 import sqlite3
 import config
 import os
+import sys
 
 def search_books(type_name=None, subject=None, topic=None, author=None, title_keyword=None):
     if not config.DB_NAME:
@@ -82,11 +83,7 @@ def search_books(type_name=None, subject=None, topic=None, author=None, title_ke
     conn.close()
     return results
 
-import sys
-
-
 def open_book(path):
-
     # Convert to absolute path relative to project root
     base_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(base_dir)
@@ -94,22 +91,31 @@ def open_book(path):
     absolute_path = os.path.abspath(os.path.join(project_root, path))
 
     if not os.path.exists(absolute_path):
-        print(f"File not found on disk: {absolute_path}")
+        print(f"File not found: {absolute_path}")
         return
 
     try:
+        extension = os.path.splitext(absolute_path)[1].lower()
+
+        # Windows
         if sys.platform.startswith("win"):
             os.startfile(absolute_path)
+
+        # macOS
         elif sys.platform.startswith("darwin"):
             os.system(f'open "{absolute_path}"')
+
+        # Linux
         else:
             os.system(f'xdg-open "{absolute_path}"')
 
-        print("Opening book...")
+        if extension == ".zip":
+            print("Opening ZIP archive...")
+        else:
+            print("Opening book...")
 
     except Exception as e:
         print(f"Failed to open file: {e}")
-
 # -------------------Test----------------------
 if __name__ == "__main__":
     print("\nSearch Library\n")
