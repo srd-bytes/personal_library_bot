@@ -107,9 +107,12 @@ Search is case-insensitive and supports partial matches.
 
 ## 📖 Opening Books
 
-After search results appear:
+After search results appear: 
+(the book can be in format .zip -> chapter pdfs)
 
     open 1
+
+(in case of .zip it opens the folder)
 
 You can open multiple books in one session:
 
