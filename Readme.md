@@ -26,7 +26,7 @@ using a structured SQL database with tagging support.
     master/
     │
     ├── finder/
-    │   ├── bot.py
+    │   ├── library_bot.py
     │   ├── config.py
     │   ├── init_db.py
     │   ├── modify.py
@@ -64,6 +64,7 @@ At startup:
 
 -   Enter a new database name (e.g., lib.db)
 -   Or load an existing one from finder/database/
+-   This allows you to make multiple databases for multiple libraries inside  the master directory.
 
 If it does not exist, it is automatically initialized.
 
