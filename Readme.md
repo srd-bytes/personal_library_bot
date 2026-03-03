@@ -1,150 +1,216 @@
 # 📚 Personal Library Bot
 
-A command-line based personal digital library manager built with
-**Python + SQLite**.
-
-This tool allows you to organize, search, and open your ebooks locally
-using a structured SQL database with tagging support.
+A Structured Personal Digital Knowledge Management System\
+Built with **Python + SQLite**
 
 ------------------------------------------------------------------------
 
-## 🚀 Features
+# 🧠 Overview
 
--   Multi-database support
--   Structured tagging: Type / Subject / Topic / Author
--   Many-to-many author mapping
--   Case-insensitive and partial-match search
--   Open PDF directly from search results
--   Delete books using metadata filters
--   Session-based database selection
--   Cross-platform PDF opening (Windows / Mac / Linux)
+**Personal Library Bot** is a command-line based digital library manager
+designed for structured ebook organization.
+
+It allows you to:
+
+-   Organize books hierarchically\
+-   Store metadata in a relational database\
+-   Search intelligently using guided filtering\
+-   Open PDFs and ZIP archives\
+-   Maintain multiple independent databases\
+-   Run locally or over SSH
+
+This is a lightweight, portable knowledge system designed for structured
+personal control.
 
 ------------------------------------------------------------------------
 
-## 🗂 Project Structure
+# 🏗 Architecture
+
+The system is built using:
+
+-   Python 3
+-   SQLite (built-in with Python)
+-   Structured relational schema
+-   Many-to-many mapping for authors
+-   Guided hierarchical filtering for search
+
+------------------------------------------------------------------------
+
+# 🗂 Project Structure
 
     master/
     │
     ├── finder/
-    │   ├── library_bot.py
+    │   ├── bot.py
     │   ├── config.py
     │   ├── init_db.py
     │   ├── modify.py
     │   ├── search.py
     │   ├── database/
-    │   
     │
     ├── library/
     │   └── example.pdf
 
 ------------------------------------------------------------------------
 
-## ⚙ Requirements
+# ⚙ Requirements
 
 -   Python 3.8+
--   SQLite (comes built-in with Python)
-
-No external packages required.
-
-------------------------------------------------------------------------
-
-## ▶ How To Run
-
-Navigate to the finder directory:
-
-``` bash
-python ./finder/library_bot.py
-```
+-   SQLite (comes bundled with Python)
+-   No external dependencies
 
 ------------------------------------------------------------------------
 
-## 🗄 Database Selection
+# ▶ Running the Application
 
-At startup:
+From inside the `master` directory:
 
--   Enter a new database name (e.g., lib.db)
--   Or load an existing one from finder/database/
--   This allows you to make multiple databases for multiple libraries inside  the master directory.
+    python ./finder/bot.py
+
+------------------------------------------------------------------------
+
+# 🗄 Database Management
+
+At startup you can:
+
+-   Select an existing database from `finder/database/`
+-   Or create a new one (e.g., `lib.db`)
 
 If it does not exist, it is automatically initialized.
 
+This allows maintaining multiple independent libraries.
+
 ------------------------------------------------------------------------
 
-## ➕ Adding a Book
+# 🧩 Database Schema
 
-Choose:
+Tables used:
+
+-   type
+-   subject
+-   topic
+-   author
+-   books
+-   book_authors (many-to-many mapping)
+
+Hierarchy:
+
+Type → Subject → Topic → Book\
+↘ Author(s)
+
+------------------------------------------------------------------------
+
+# ➕ Adding a Book
+
+From the main menu:
 
     add
 
 Provide:
 
 -   Title
--   Path (e.g., ./library/book.pdf (with respect to master))
--   Type (e.g., book, question_paper etc)
--   Subject (e.g., math, electrical_engineering, finance etc)
--   Topic (e.g., linear_algebra, ordinary_differential_equations, stocashtic_calculus etc)
--   Authors (comma separated)
-
-------------------------------------------------------------------------
-
-## 🔎 Searching Books
-
-Choose:
-
-    search
-
-You can filter by:
-
+-   Path (relative to master directory, e.g. `./library/book.pdf`)
 -   Type
 -   Subject
 -   Topic
--   Author
--   Title keyword
+-   Authors (comma separated)
 
-Search is case-insensitive and supports partial matches.
+If metadata does not exist, it is automatically created.
 
 ------------------------------------------------------------------------
 
-## 📖 Opening Books
+# 🔎 Searching Books
 
-After search results appear: 
-(the book can be in format .zip -> chapter pdfs)
+From main menu:
 
-    open 1
+    search
 
-(in case of .zip it opens the folder)
+Search is fully guided:
 
-You can open multiple books in one session:
+1.  Select Type (or skip)
+2.  Select Subject (filtered by Type)
+3.  Select Topic (filtered by Type + Subject)
+4.  Enter Author manually (optional)
+5.  Enter Title keyword (optional)
+
+Search is: - Case-insensitive - Partial match enabled - Hierarchically
+filtered
+
+------------------------------------------------------------------------
+
+# 📖 Opening Books
+
+After results:
 
     open 1
     open 2
-    open 3
+
+You may open multiple books in one session.
+
+If the file is a `.zip`, it opens in file explorer.
 
 Press Enter to exit open mode.
 
 ------------------------------------------------------------------------
 
-## 🗑 Deleting Books
+# 🗑 Deleting Books
 
-Choose:
+From main menu:
 
     delete
 
-Provide metadata filters to remove matching books from the database.
+Filter by metadata and confirm deletion.
+
+Foreign key constraints ensure clean removal of mappings.
 
 ------------------------------------------------------------------------
 
-## 📁 File Storage Strategy
+# 📁 File Storage Strategy
 
--   PDFs stored in library/
--   Databases stored in finder/database/
--   Relative paths used for portability
+Recommended:
 
+-   Store PDFs/ZIPs in `library/`
+-   Store databases in `finder/database/`
+-   Use relative paths for portability
+
+Example:
+
+    ./library/linear_algebra.pdf
 
 ------------------------------------------------------------------------
 
-## 👨‍💻 Author
+# 🌍 Remote Execution (SSH)
+
+Run remotely:
+
+    ssh user@server_ip
+    cd master
+    python ./finder/library_bot.py
+
+If running over SSH:
+
+-   GUI file opening will not work
+-   The program prints the absolute file path instead
+
+To download from remote server:
+
+    scp your_username@client_ip:/full/path/to/where_to_download/.
+
+Now you dont have to type this. You need to provide path and your username.
+
+    To get your username, run whoami command in your terminal
+
+------------------------------------------------------------------------
+
+# 🛡 Security
+
+-   Fully local SQLite storage
+-   No cloud dependency
+-   Works offline
+
+------------------------------------------------------------------------
+
+# 👨‍💻 Author
 
 Soumya Ranjan Das\
 Electrical Engineering Student\
-Personal Knowledge System Builder

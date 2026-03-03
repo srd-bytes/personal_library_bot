@@ -24,16 +24,22 @@ def initialize_database():
     # SUBJECT table
     c.execute("""
     CREATE TABLE IF NOT EXISTS subject (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT UNIQUE
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    type_id INTEGER,
+    UNIQUE(name, type_id),
+    FOREIGN KEY (type_id) REFERENCES type(id)
     )
     """)
 
     # TOPIC table
     c.execute("""
     CREATE TABLE IF NOT EXISTS topic (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT UNIQUE
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    subject_id INTEGER,
+    UNIQUE(name, subject_id),
+    FOREIGN KEY (subject_id) REFERENCES subject(id)
     )
     """)
 

@@ -91,25 +91,14 @@ if __name__ == "__main__":
                     if path.lower() == "back":
                         break
 
-                    type_name = input("Type: ")
-                    if type_name.lower() == "back":
-                        break
-
-                    subject_name = input("Subject: ")
-                    if subject_name.lower() == "back":
-                        break
-
-                    topic_name = input("Topic: ")
-                    if topic_name.lower() == "back":
-                        break
-
+                    
                     authors_input = input("Authors (comma separated): ")
                     if authors_input.lower() == "back":
                         break
 
                     authors = authors_input.split(",")
 
-                    add_book(title, path, type_name, subject_name, topic_name, authors)
+                    add_book(title, path, authors)
 
                     print("\nBook added successfully.\n")
 
@@ -121,32 +110,7 @@ if __name__ == "__main__":
                 try:
                     print("\nSearch Library (type 'back' anytime to return)\n")
 
-                    type_name = input("Type (Enter to skip): ").strip()
-                    if type_name.lower() == "back":
-                        break
-                    type_name = type_name or None
-
-                    subject = input("Subject (Enter to skip): ").strip()
-                    if subject.lower() == "back":
-                        break
-                    subject = subject or None
-
-                    topic = input("Topic (Enter to skip): ").strip()
-                    if topic.lower() == "back":
-                        break
-                    topic = topic or None
-
-                    author = input("Author (Enter to skip): ").strip()
-                    if author.lower() == "back":
-                        break
-                    author = author or None
-
-                    title_keyword = input("Title keyword (Enter to skip): ").strip()
-                    if title_keyword.lower() == "back":
-                        break
-                    title_keyword = title_keyword or None
-
-                    results=search_books(type_name, subject, topic, author, title_keyword)
+                    results=search_books()
                     
                     if results:
                         while True:

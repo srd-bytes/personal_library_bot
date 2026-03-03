@@ -5,7 +5,6 @@ import config
 def normalize(text):
     return text.strip().title()
 
-
 def get_or_create_id(conn, table, name):
     c = conn.cursor()
 
@@ -18,8 +17,85 @@ def get_or_create_id(conn, table, name):
     c.execute(f"INSERT INTO {table} (name) VALUES (?)", (name,))
     return c.lastrowid
 
+def select_subject(conn, type_id):
+    c = conn.cursor()
 
-def add_book(title, path, type_name, subject_name, topic_name, authors):
+    c.execute(
+        "SELECT id, name FROM subject WHERE type_id=? ORDER BY name",
+        (type_id,)
+    )
+    rows = c.fetchall()
+
+    print("\nSelect Subject:")
+    if rows:
+        for i, (id_, name) in enumerate(rows, start=1):
+            print(f"[{i}] {name}")
+    else:
+        print("No subjects under this type yet.")
+
+    user_input = input("Enter number or new Subject: ").strip()
+
+    if user_input.isdigit() and rows:
+        return rows[int(user_input)-1][0]
+
+    # Create new subject under selected type
+    c.execute(
+        "INSERT INTO subject (name, type_id) VALUES (?, ?)",
+        (user_input.title(), type_id)
+    )
+    conn.commit()
+    return c.lastrowid
+
+def select_topic(conn, subject_id):
+    c = conn.cursor()
+
+    c.execute(
+        "SELECT id, name FROM topic WHERE subject_id=? ORDER BY name",
+        (subject_id,)
+    )
+    rows = c.fetchall()
+
+    print("\nSelect Topic:")
+    if rows:
+        for i, (id_, name) in enumerate(rows, start=1):
+            print(f"[{i}] {name}")
+    else:
+        print("No topics under this subject yet.")
+
+    user_input = input("Enter number or new Topic: ").strip()
+
+    if user_input.isdigit() and rows:
+        return rows[int(user_input)-1][0]
+
+    # Create new topic under selected subject
+    c.execute(
+        "INSERT INTO topic (name, subject_id) VALUES (?, ?)",
+        (user_input.title(), subject_id)
+    )
+    conn.commit()
+    return c.lastrowid
+
+def select_type(conn):
+    c = conn.cursor()
+    c.execute("SELECT id, name FROM type ORDER BY name")
+    rows = c.fetchall()
+
+    print("\nSelect Type:")
+    for i, (id_, name) in enumerate(rows, start=1):
+        print(f"[{i}] {name}")
+
+    user_input = input("Enter number or new Type: ").strip()
+
+    if user_input.isdigit():
+        return rows[int(user_input)-1][0]
+
+    # Create new type
+    c.execute("INSERT INTO type (name) VALUES (?)", (user_input.title(),))
+    conn.commit()
+    return c.lastrowid
+
+
+def add_book(title, path, authors):
     if not config.DB_NAME:
         raise ValueError("Database not set. Start session first.")
 
@@ -29,14 +105,14 @@ def add_book(title, path, type_name, subject_name, topic_name, authors):
 
     # Normalize main fields
     title = title.strip()
-    type_name = normalize(type_name)
-    subject_name = normalize(subject_name)
-    topic_name = normalize(topic_name)
+    # type_name = normalize(type_name)
+    # subject_name = normalize(subject_name)
+    # topic_name = normalize(topic_name)
 
-    # Get or create type, subject, topic
-    type_id = get_or_create_id(conn, "type", type_name)
-    subject_id = get_or_create_id(conn, "subject", subject_name)
-    topic_id = get_or_create_id(conn, "topic", topic_name)
+    # choose or create type, subject, topic
+    type_id = select_type(conn)
+    subject_id = select_subject(conn, type_id)
+    topic_id = select_topic(conn, subject_id)
 
     # Insert book
     c.execute("""
