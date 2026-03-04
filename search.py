@@ -140,7 +140,7 @@ def search_books():
         conn.close()
         return []
 
-    for book_id, title, path, type_name, subject, topic in results:
+    for idx, (book_id, title, path, type_name, subject, topic) in enumerate(results, start=1):
 
         c.execute("""
             SELECT a.name
@@ -151,12 +151,12 @@ def search_books():
         authors = [row[0] for row in c.fetchall()]
 
         print("--------------------------------------------------")
-        print(f"Title   : {title}")
-        print(f"Type    : {type_name}")
-        print(f"Subject : {subject}")
-        print(f"Topic   : {topic}")
-        print(f"Authors : {', '.join(authors) if authors else 'N/A'}")
-        print(f"Path    : {path}")
+        print(f"[{idx}] Title   : {title}")
+        print(f"    Type    : {type_name}")
+        print(f"    Subject : {subject}")
+        print(f"    Topic   : {topic}")
+        print(f"    Authors : {', '.join(authors) if authors else 'N/A'}")
+        print(f"    Path    : {path}")
         print("--------------------------------------------------\n")
 
     conn.close()
@@ -216,13 +216,3 @@ def open_book(path):
         print(f"Failed to open file: {e}")
         print(f"File path: {absolute_path}")
 # -------------------Test----------------------
-if __name__ == "__main__":
-    print("\nSearch Library\n")
-
-    type_name = input("Type (Enter to skip): ").strip() or None
-    subject = input("Subject (Enter to skip): ").strip() or None
-    topic = input("Topic (Enter to skip): ").strip() or None
-    author = input("Author (Enter to skip): ").strip() or None
-    title_keyword = input("Title keyword (Enter to skip): ").strip() or None
-
-    search_books(type_name, subject, topic, author, title_keyword)
