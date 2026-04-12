@@ -209,6 +209,12 @@ Now you dont have to type this. You need to provide path and your username.
 -   Works offline
 
 ------------------------------------------------------------------------
+# Message from Author
+
+- Just add the finder folder, library folder and save the pdfs in that library folder using simple names
+- Manage an Excel Sheet for tracking and tagging purpose (simple name, real name, author etc)
+- switch on the bot and follow process
+------------------------------------------------------------------------
 
 # 👨‍💻 Author
 
