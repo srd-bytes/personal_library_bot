@@ -212,7 +212,7 @@ Now you dont have to type this. You need to provide path and your username.
 # Message from Author
 
 - Just add the finder folder, library folder and save the pdfs in that library folder using simple names
-- Manage an Excel Sheet for tracking and tagging purpose (simple name, real name, author etc)
+- Manage an Excel Sheet for tracking and tagging purpose (simple name, real name, author etc) (preferably use color codes: blue: need to download(if...) , yellow: saved but not tagged, green: tagged )
 - switch on the bot and follow process
 ------------------------------------------------------------------------
 
